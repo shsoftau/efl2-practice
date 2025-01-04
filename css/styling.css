@@ -1,0 +1,57 @@
+
+/* General table styling */
+table {
+  table-layout: fixed;
+  width: 100%; /* Full width */
+  border-collapse: collapse; /* Merge borders for a clean look */
+  margin: 20px auto; /* Centre the table with some margin */
+  font-family: Arial, sans-serif; /* Choose a clean font */
+  font-size: 14px;
+  border: 1px solid #807f7f; /* Add an outer border */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Drop shadow effect */
+  border-radius: 8px; /* Optional: Rounded corners */
+}
+
+th {
+  position: sticky;
+  top: 0; /* Keep the header at the top when scrolling */
+  background-color: #f3f3f3; /* Background colour for header */
+  z-index: 10; /* Ensure it stays above other elements */
+  text-align: center; /* Align text to the left */
+  padding: 10px; /* Add some padding */
+  border: 1px solid #807f7f; /* Add a border around each header cell */
+}
+
+/* Table row styling */
+td {
+  padding: 10px; /* Padding for readability */
+  text-align: center; /* Centre align for all cells */
+  border: 1px solid #a5a2a2; /* Add a border around each cell */
+}
+
+/* Hover effect for rows */
+tr:hover {
+  background-color: #f9f9f9; /* Highlight row on hover */
+}
+
+/* Optional: Make the first column (position) and last column (points) bold */
+td:first-child,
+td:last-child {
+  font-weight: bold;
+}
+
+/* Optional: Add rounded corners to the table */
+table {
+  border-radius: 8px; /* Rounded corners */
+  overflow: hidden; /* Prevent corners from being clipped */
+}
+
+th.Team-column,
+td.Team-column {
+  width: 150px !important;
+  text-align: Left !important;
+}
+
+.badge-column {
+  width: 15px !important;
+}
