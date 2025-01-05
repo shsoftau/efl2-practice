@@ -1,8 +1,94 @@
+/* General body styling */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  height: 100vh; /* Full viewport height */
+  overflow: hidden; /* Disable page scroll */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Layout container */
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Full height for the layout */
+  width: 100%;
+}
+
+/* Top Menu Bar */
+.menu-bar {
+  height: 100px; /* Fixed height */
+  width: 100%; /* Full width */
+  background-color: #f3f3f3; /* Light background colour */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem; /* Optional: Adjust font size */
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Main Content Area */
+.main-content {
+  flex: 1; /* Take the remaining space below the menu bar */
+  display: flex;
+  flex-direction: row;
+  height: calc(100% - 100px); /* Subtract the height of the menu bar */
+}
+
+/* Left Pane */
+.left-pane {
+  width: 180px; /* Fixed width */
+  padding: 20px; /* Add padding inside the pane */
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1); /* Optional shadow effect */
+  height: 100%; /* Make the left pane stretch to full height */
+  display: flex;
+  flex-direction: column; /* Arrange buttons vertically */
+  align-items: center; /* Horizontally centre buttons */
+  gap: 10px; /* Add space between buttons */
+}
+
+/* Button Styling */
+.left-button {
+  width: auto; /* Let the width adjust based on text content */
+  padding: 10px 20px; /* Optional: Adjust padding for spacing */
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  border: none; /* Remove borders */
+  background-color: transparent; /* Make background transparent */
+  color: inherit; /* Use inherited text colour */
+  transition: color 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.left-button:hover {
+  background-color: #3d3c3c; /* Set background colour */
+  color: white; /* Set font colour to white */
+  border-radius: 10px; /* Add rounded corners */
+}
+
+/* Data Container (Table Container) */
+.data-container {
+  flex: 1; /* Take the remaining width */
+  padding: 20px;
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: auto; /* Enable horizontal scrolling if needed */
+  height: 100%; /* Ensure it fills the available vertical space */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Ensure table stays aligned properly */
+}
+
+
 
 /* General table styling */
 table {
   table-layout: fixed;
-  width: 100%; /* Full width */
+  width: 80%; /* Full width */
   border-collapse: collapse; /* Merge borders for a clean look */
   margin: 20px auto; /* Centre the table with some margin */
   font-family: Arial, sans-serif; /* Choose a clean font */
@@ -10,6 +96,8 @@ table {
   border: 1px solid #807f7f; /* Add an outer border */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Drop shadow effect */
   border-radius: 8px; /* Optional: Rounded corners */
+  border-left: 1px solid #807f7f; /* Keep left border */
+  border-right: 1px solid #807f7f; /* Keep right border */
 }
 
 th {
@@ -17,17 +105,33 @@ th {
   top: 0; /* Keep the header at the top when scrolling */
   background-color: #f3f3f3; /* Background colour for header */
   z-index: 10; /* Ensure it stays above other elements */
-  text-align: center; /* Align text to the left */
+  text-align: center; /* Centre align header text */
   padding: 10px; /* Add some padding */
-  border: 1px solid #807f7f; /* Add a border around each header cell */
+  border-top: 1px solid #807f7f; /* Keep top border */
+  border-bottom: 1px solid #807f7f; /* Keep bottom border */
+  border-left: none; /* Remove vertical borders between headers */
+  border-right: none; /* Remove vertical borders between headers */
 }
 
 /* Table row styling */
 td {
-  padding: 10px; /* Padding for readability */
+  padding: 5px; /* Reduce padding to make rows tighter */
   text-align: center; /* Centre align for all cells */
-  border: 1px solid #a5a2a2; /* Add a border around each cell */
+  border-top: 1px solid #a5a2a2; /* Keep horizontal dividing lines */
+  border-bottom: 1px solid #a5a2a2; /* Keep horizontal dividing lines */
+  border-left: none; /* Remove vertical dividing lines */
+  border-right: none; /* Remove vertical dividing lines */
+  line-height: 1; /* Set line height to match text size */
+  vertical-align: middle; /* Ensure content is vertically centred */
 }
+
+/* Optional: First and last columns */
+table {
+  border-left: 1px solid #807f7f; /* Keep the outer left border */
+  border-right: 1px solid #807f7f; /* Keep the outer right border */
+}
+
+
 
 /* Hover effect for rows */
 tr:hover {
@@ -52,6 +156,19 @@ td.Team-column {
   text-align: Left !important;
 }
 
-.badge-column {
-  width: 15px !important;
+
+.badge-column img,
+.badge-img {
+  width: auto !important; /* Fixed width */
+  height: 22px !important; /* Maintain aspect ratio */
+  display: block; /* Prevent inline spacing issues */
+  margin: 0 auto; /* Centre the image */
+  text-align: center; /* Centre align the content */
+}
+
+.badge-column,
+td:nth-child(1), /* Assuming the badge column is the second column */
+th:nth-child(1) {
+  text-align: center; /* Horizontally centre-align text and content */
+  vertical-align: middle; /* Vertically centre-align the cell content */
 }

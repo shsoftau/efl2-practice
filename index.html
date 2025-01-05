@@ -8,18 +8,32 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body>
-  <div id="menu-bar"></div>
-  <div id="data-container"></div>
+  <div class="layout">
+    <!-- Top Menu Bar -->
+    <div id="menu-bar" class="menu-bar"></div>
 
-  <!-- Proper table structure -->
-  <table>
-    <thead>
-    </thead>
-    <tbody>
-      <!-- Add rows dynamically or statically here -->
-    </tbody>
-  </table>
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <!-- Left Pane -->
+      <div class="left-pane">
+        <p>Leagues</p>
+        <!-- Add buttons -->
+        <button class="left-button" onclick="handleButtonClick(1)">Premier League</button>
+        <button class="left-button" onclick="handleButtonClick(2)">Bundesliga</button>
+        <button class="left-button" onclick="handleButtonClick(3)">La Liga</button>
+        <button class="left-button" onclick="handleButtonClick(4)">Primeira Liga</button>
+        <button class="left-button" onclick="handleButtonClick(5)">Ligue 1</button>
+        <button class="left-button" onclick="handleButtonClick(6)">Serie A</button>
+        <button class="left-button" onclick="handleButtonClick(7)">Eredivisie</button>
+      </div>
 
-  <script src="./dist/index.js"></script> <!-- Replace with your compiled .js file -->
+      <!-- Data Container -->
+      <div id="data-container" class="data-container">
+        <!-- Data will be dynamically loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <script src="./dist/index.js"></script> <!-- JavaScript file containing the logic -->
 </body>
 </html>
