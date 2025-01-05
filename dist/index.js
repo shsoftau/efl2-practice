@@ -4,9 +4,9 @@ var csvUrl = 'https://www.footydatasheet.com/2024Fc7fb2ee9/leagues/standings/web
 
 // Table column settings (includes width and alignment)
 const columnSettings = {
-    "Team": { width: "200px", align: "left" },
+    "Position": { width: "40px", align: "center" },
     "Badge": { width: "50px", align: "center" },
-    "Points": { width: "40px", align: "center" },
+    "Team": { width: "200px", align: "left" },
     "W": { width: "40px", align: "center" },
     "D": { width: "40px", align: "center" },
     "L": { width: "40px", align: "center" },
@@ -14,6 +14,7 @@ const columnSettings = {
     "GA": { width: "40px", align: "center" },
     "GD": { width: "40px", align: "center" },
     "MP": { width: "40px", align: "center" },
+    "Points": { width: "40px", align: "center" },
     "Last 5": { width: "150px", align: "center" },
 };
 

@@ -88,7 +88,7 @@ body {
 /* General table styling */
 table {
   table-layout: fixed;
-  width: 80%; /* Full width */
+  width: fixed; /* Full width */
   border-collapse: collapse; /* Merge borders for a clean look */
   margin: 20px auto; /* Centre the table with some margin */
   font-family: Arial, sans-serif; /* Choose a clean font */
