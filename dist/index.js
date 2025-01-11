@@ -1,192 +1,252 @@
 "use strict";
 
-var csvUrl = 'https://www.footydatasheet.com/2024Fc7fb2ee9/leagues/standings/web_ALL_standings_2024.csv';
+// Define dynamic filter values as constants
+let sel_league_code = 39; // Default league code (Premier League)
+let fixtureFilterValue = 39; // Example filter value for fixtures
 
-// Table column settings (includes width and alignment)
-const columnSettings = {
-    "Position": { width: "40px", align: "center" },
-    "Badge": { width: "50px", align: "center" },
-    "Team": { width: "200px", align: "left" },
-    "W": { width: "40px", align: "center" },
-    "D": { width: "40px", align: "center" },
-    "L": { width: "40px", align: "center" },
-    "GF": { width: "40px", align: "center" },
-    "GA": { width: "40px", align: "center" },
-    "GD": { width: "40px", align: "center" },
-    "MP": { width: "40px", align: "center" },
-    "Points": { width: "40px", align: "center" },
-    "Last 5": { width: "150px", align: "center" },
+// Dictionary mapping keys to URLs, column settings, and filtering parameters
+const urlDictionary = {
+    1: {
+        url: 'https://www.footydatasheet.com/2024Fc7fb2ee9/leagues/standings/web_ALL_standings_2024.csv',
+        columnSettings: {
+            "Position": { width: "40px", align: "center" },
+            "Badge": { width: "50px", align: "center" },
+            "Team": { width: "220px", align: "left" },
+            "W": { width: "40px", align: "center" },
+            "D": { width: "40px", align: "center" },
+            "L": { width: "40px", align: "center" },
+            "GF": { width: "40px", align: "center" },
+            "GA": { width: "40px", align: "center" },
+            "GD": { width: "40px", align: "center" },
+            "MP": { width: "40px", align: "center" },
+            "Points": { width: "40px", align: "center" },
+            "Last 5": { width: "150px", align: "center" },
+        },
+        filterField: "league", // Field to filter
+        filterValue: () => sel_league_code, // Dynamic league code
+        hiddenColumns: ["league", "season"] // Define columns to hide for currentKey = 1
+    },
+    2: {
+        url: 'https://www.footydatasheet.com/2024Fc7fb2ee9/leagues/fixtures/fixtures_byleague_2024_39.csv',
+        columnSettings: {
+            "fixture.date": { width: "150px", align: "center" },
+            "teams.home.name": { width: "200px", align: "left" },
+            "teams.away.name": { width: "200px", align: "left" },
+        },
+        filterField: "league.id", // Field to filter
+        filterValue: () => fixtureFilterValue, // Dynamic fixture filter
+    },
 };
 
-// Default league code
-let sel_league_code = 88;
+let currentKey = 1; // Default key (Standings)
 
-// Dictionary mapping button names to league codes
-const leagueCodes = {
-    1: 39,  // English Premier League
-    2: 78,  // Bundesliga
-    3: 140, // La Liga
-    4: 94,  // Primeira Liga
-    5: 61,  // Ligue 1
-    6: 135, // Serie A
-    7: 88   // Eredivisie
-};
+// Handle left pane button clicks
+function handleLeftButtonClick(button) {
+    switch (button) {
+        case "premier_league": sel_league_code = 39; break;
+        case "bundesliga": sel_league_code = 78; break;
+        case "la_liga": sel_league_code = 140; break;
+        case "serie_a": sel_league_code = 135; break;
+        case "ligue_1": sel_league_code = 61; break;
+        case "primeira_liga": sel_league_code = 94; break;
+        case "eredivisie": sel_league_code = 88; break;
+        default: console.error("Unknown league button:", button); return;
+    }
+    updateLeftPaneActiveButton(); // Update active button
+    refreshData(); // Refresh data for the selected league
+}
 
-function setupMenuBar() {
-    var menuBar = document.getElementById('menu-bar');
-    if (menuBar) {
-        menuBar.innerHTML = `
-      <nav>
-        <a href="#home" style="margin-right: 20px;">Home</a>
-        <a href="#standings">Standings</a>
-      </nav>
-    `;
+
+
+
+// Handle top button clicks
+function handleTopButtonClick(action) {
+    switch (action) {
+        case "standings": currentKey = 1; break;
+        case "fixtures": currentKey = 2; break;
+        default: console.error("Unknown action:", action); return;
+    }
+    updateTopPaneActiveButton(); // Update active button
+    refreshData(); // Refresh data for the selected action
+}
+
+function refreshData() {
+    const config = urlDictionary[currentKey];
+    if (config) {
+        const csvUrl = config.url;
+        const filterField = config.filterField;
+        const filterValue = config.filterValue();
+        console.log(`Loading data from ${csvUrl} with filter ${filterField}=${filterValue}`);
+        fetchAndDisplayCSV(csvUrl, filterField, filterValue);
+    } else {
+        console.error(`No URL or configuration found for key: ${currentKey}`);
     }
 }
 
-function fetchAndDisplayCSV(url) {
+// Function to fetch and display data
+function fetchAndDisplayCSV(url, filterField, filterValue) {
     fetch(url)
-        .then(function (response) {
+        .then((response) => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             return response.text();
         })
-        .then(function (csvData) {
-            var parsedData = Papa.parse(csvData, { header: true }).data; // Use global Papa object with headers
-            filterAndDisplayData(parsedData);
+        .then((csvData) => {
+            const parsedData = Papa.parse(csvData, { header: true }).data;
+            const filteredData = parsedData.filter((row) => row[filterField] == filterValue);
+            displayData(filteredData);
         })
-        .catch(function (error) {
-            console.error('Error fetching or parsing CSV:', error);
-        });
-}
-
-function filterAndDisplayData(data) {
-    // Filter data based on the selected league code
-    const filteredData = data.filter(row => row.league == sel_league_code);
-
-    displayData(filteredData);
-
-    // Hide specific columns by name
-    hideColumnsByName(["league", "season"]);
+        .catch((error) => console.error("Error fetching or parsing CSV:", error));
 }
 
 function displayData(data) {
-    var container = document.getElementById('data-container');
+    const container = document.getElementById("data-container");
     if (container) {
-        container.innerHTML = ''; // Clear existing content
-        var table = document.createElement('table');
+        container.innerHTML = ""; // Clear existing content
+        const table = document.createElement("table");
+
+        // Retrieve hidden columns for the currentKey
+        const hiddenColumns = urlDictionary[currentKey]?.hiddenColumns || [];
+        const columnSettings = urlDictionary[currentKey]?.columnSettings || {};
 
         // Add table header
         if (data.length > 0) {
             const headerRow = Object.keys(data[0]);
-            var tr = document.createElement('tr');
-            headerRow.forEach(columnName => {
-                var th = document.createElement('th');
-                th.textContent = columnName;
-                tr.appendChild(th);
+            const tr = document.createElement("tr");
+            headerRow.forEach((columnName) => {
+                if (!hiddenColumns.includes(columnName)) { // Check if column is not hidden
+                    const th = document.createElement("th");
+                    th.textContent = columnName;
+
+                    // Apply width from column settings
+                    if (columnSettings[columnName]?.width) {
+                        th.style.width = columnSettings[columnName].width;
+                    }
+
+                    // Apply alignment from column settings
+                    if (columnSettings[columnName]?.align) {
+                        th.style.textAlign = columnSettings[columnName].align;
+                    }
+
+                    tr.appendChild(th);
+                }
             });
             table.appendChild(tr);
         }
 
         // Add table rows
-        data.forEach(function (row) {
-            var tr = document.createElement('tr');
-            Object.values(row).forEach((cell, colIndex) => {
-                var cellElement = document.createElement('td');
-                const columnName = Object.keys(row)[colIndex]?.trim();
+        data.forEach((row) => {
+            const tr = document.createElement("tr");
+            Object.entries(row).forEach(([columnName, cell]) => {
+                if (!hiddenColumns.includes(columnName)) { // Check if column is not hidden
+                    const cellElement = document.createElement("td");
 
-                if (columnName === "Badge") { // Badge column logic
-                    var img = document.createElement('img');
-                    img.src = cell; // Use cell value as image URL
-                    img.alt = 'Badge'; // Accessibility
-                    img.className = 'badge-img'; // Add a class for styling
-                    img.onerror = function () {
-                        cellElement.textContent = ''; // Fallback: Show URL if image fails
-                    };
-                    cellElement.appendChild(img);
-                } else {
-                    cellElement.textContent = cell;
+                    if (columnName === "Badge") {
+                        const img = document.createElement("img");
+                        img.src = cell; // Use cell value as image URL
+                        img.alt = "Badge";
+                        img.className = "badge-img";
+                        img.onerror = () => {
+                            cellElement.textContent = ""; // Fallback
+                        };
+                        cellElement.appendChild(img);
+                    } else {
+                        cellElement.textContent = cell;
+                    }
+
+                    // Apply alignment from column settings
+                    if (columnSettings[columnName]?.align) {
+                        cellElement.style.textAlign = columnSettings[columnName].align;
+                    }
+
+                    // Apply width from column settings
+                    if (columnSettings[columnName]?.width) {
+                        cellElement.style.width = columnSettings[columnName].width;
+                    }
+
+                    tr.appendChild(cellElement);
                 }
-
-                // Apply alignment from column settings
-                if (columnSettings[columnName]?.align) {
-                    cellElement.style.textAlign = columnSettings[columnName].align;
-                }
-
-                tr.appendChild(cellElement);
             });
             table.appendChild(tr);
         });
 
         container.appendChild(table);
-
-        // Set column widths after table is appended to the DOM
-        setColumnStyles(table, columnSettings);
     }
 }
 
-function setColumnStyles(table, settings) {
-    const headers = table.querySelectorAll("th");
-    headers.forEach((header, index) => {
-        const columnName = header.textContent.trim();
-        if (settings[columnName]) {
-            const { width, align } = settings[columnName];
 
-            // Set column width
-            if (width) header.style.width = width;
 
-            // Set alignment for header
-            if (align) header.style.textAlign = align;
 
-            // Apply alignment to corresponding data cells
-            const dataCells = table.querySelectorAll(`td:nth-child(${index + 1})`);
-            dataCells.forEach((cell) => {
-                cell.style.textAlign = align;
-            });
+// Apply active class to the left pane buttons
+function updateLeftPaneActiveButton() {
+    document.querySelectorAll(".left-button").forEach((button) => {
+        const league = button.getAttribute("data-league");
+        if (league === getLeagueNameByCode(sel_league_code)) {
+            button.classList.add("active");
+        } else {
+            button.classList.remove("active");
         }
     });
 }
 
-// Update table when league code changes
-function updateLeagueCode(newLeagueCode) {
-    sel_league_code = newLeagueCode;
-    fetchAndDisplayCSV(csvUrl); // Refresh table data
-}
-
-// Handle button clicks
-function handleButtonClick(buttonNumber) {
-    const newLeagueCode = leagueCodes[buttonNumber];
-    if (newLeagueCode) {
-        updateLeagueCode(newLeagueCode);
-    } else {
-        console.error(`No league code found for button ${buttonNumber}`);
-    }
-}
-
-function hideColumnsByName(columnNames) {
-    const table = document.querySelector("table"); // Select the table
-    if (!table) return;
-
-    const headers = table.querySelectorAll("th"); // Get all headers
-    headers.forEach((header, index) => {
-        const columnName = header.textContent.trim();
-        if (columnNames.includes(columnName)) {
-            // Hide the header
-            header.style.display = "none";
-
-            // Hide the corresponding cells
-            const cells = table.querySelectorAll(`td:nth-child(${index + 1})`);
-            cells.forEach((cell) => {
-                cell.style.display = "none";
-            });
+// Apply active class to the top pane buttons
+function updateTopPaneActiveButton() {
+    document.querySelectorAll(".top-button").forEach((button) => {
+        const action = button.getAttribute("data-action");
+        if (
+            (action === "standings" && currentKey === 1) ||
+            (action === "fixtures" && currentKey === 2)
+        ) {
+            button.classList.add("active");
+        } else {
+            button.classList.remove("active");
         }
     });
 }
 
-function initialize() {
-    setupMenuBar();
-    fetchAndDisplayCSV(csvUrl);
+// Map sel_league_code to the corresponding data-league attribute
+function getLeagueNameByCode(code) {
+    switch (code) {
+        case 39: return "premier_league";
+        case 78: return "bundesliga";
+        case 140: return "la_liga";
+        case 135: return "serie_a";
+        case 61: return "ligue_1";
+        case 94: return "primeira_liga";
+        case 88: return "eredivisie";
+        default: return null;
+    }
 }
 
-initialize();
+
+
+
+
+
+
+
+
+// Add event listeners for buttons and load default data
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".left-button").forEach((button) => {
+        button.addEventListener("click", () => {
+            const league = button.getAttribute("data-league");
+            handleLeftButtonClick(league);
+        });
+    });
+
+    document.querySelectorAll(".top-button").forEach((button) => {
+        button.addEventListener("click", () => {
+            const action = button.getAttribute("data-action");
+            handleTopButtonClick(action);
+        });
+    });
+
+    // Initial active states
+    updateLeftPaneActiveButton();
+    updateTopPaneActiveButton();
+
+    // Load the default data on page load
+    refreshData();
+});

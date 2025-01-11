@@ -3,28 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Standings</title>
+  <title>&#10;Standings</title>
   <link rel="stylesheet" href="./css/styling.css"> <!-- Link to your CSS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body>
   <div class="layout">
     <!-- Top Menu Bar -->
-    <div id="menu-bar" class="menu-bar"></div>
+    <div id="menu-bar" class="menu-bar">
+      <div class="top-buttons">
+        <button class="top-button" data-action="standings">Standings</button>
+        <button class="top-button" data-action="fixtures">Fixtures</button>
+        <button class="top-button" data-action="teamFixtures">Team Fixtures</button>
+      </div>
+    </div>
 
     <!-- Main Content Area -->
     <div class="main-content">
       <!-- Left Pane -->
       <div class="left-pane">
         <p>Leagues</p>
-        <!-- Add buttons -->
-        <button class="left-button" onclick="handleButtonClick(1)">Premier League</button>
-        <button class="left-button" onclick="handleButtonClick(2)">Bundesliga</button>
-        <button class="left-button" onclick="handleButtonClick(3)">La Liga</button>
-        <button class="left-button" onclick="handleButtonClick(4)">Primeira Liga</button>
-        <button class="left-button" onclick="handleButtonClick(5)">Ligue 1</button>
-        <button class="left-button" onclick="handleButtonClick(6)">Serie A</button>
-        <button class="left-button" onclick="handleButtonClick(7)">Eredivisie</button>
+        <button class="left-button" data-league="premier_league">Premier League</button>
+        <button class="left-button" data-league="bundesliga">Bundesliga</button>
+        <button class="left-button" data-league="la_liga">La Liga</button>
+        <button class="left-button" data-league="serie_a">Serie A</button>
+        <button class="left-button" data-league="ligue_1">Ligue 1</button>
+        <button class="left-button" data-league="primeira_liga">Primeira Liga</button>
+        <button class="left-button" data-league="eredivisie">Eredivisie</button>
       </div>
 
       <!-- Data Container -->

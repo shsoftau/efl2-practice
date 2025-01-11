@@ -1,4 +1,4 @@
-/* General body styling */
+/* General Styling */
 body {
   margin: 0;
   padding: 0;
@@ -10,7 +10,7 @@ body {
   flex-direction: column;
 }
 
-/* Layout container */
+/* Layout Container */
 .layout {
   display: flex;
   flex-direction: column;
@@ -22,14 +22,58 @@ body {
 .menu-bar {
   height: 100px; /* Fixed height */
   width: 100%; /* Full width */
-  background-color: #f3f3f3; /* Light background colour */
+  /*background-color: #f3f3f3; /* Light background colour */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 1.5rem; /* Optional: Adjust font size */
-  font-weight: bold;
+  justify-content: center; /*horizontally centre items*/
+  padding: 0 20px; /* Padding for spacing */
+}
+
+/* Buttons in Top Menu Bar */
+.top-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px; /* Space between buttons */
+  align-items: center;
+}
+
+.top-button {
+  width: auto; /* Same format as left pane buttons */
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
   text-align: center;
+  border: none;
+  background-color: transparent; /* Match the left pane button style */
+  color: inherit;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}/* Top Menu Bar */
+
+
+/* Buttons in Top Menu Bar */
+.top-buttons {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+  align-items: center; /* Ensure vertical alignment */
+}
+
+.top-button {
+  width: auto; /* Same format as left pane buttons */
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  border: none;
+  background-color: transparent; /* Match the left pane button style */
+  color: inherit;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.top-button:hover {
+  background-color: #989595; /* Hover background colour */
+  color: white; /* Hover text colour */
+  border-radius: 10px; /* Add rounded corners on hover */
 }
 
 /* Main Content Area */
@@ -42,20 +86,31 @@ body {
 
 /* Left Pane */
 .left-pane {
-  width: 180px; /* Fixed width */
-  padding: 20px; /* Add padding inside the pane */
+  width: 190px; /* Fixed width */
+  padding: 0; /* Add padding inside the pane */
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1); /* Optional shadow effect */
   height: 100%; /* Make the left pane stretch to full height */
   display: flex;
   flex-direction: column; /* Arrange buttons vertically */
+  justify-content: flex-start; /*Align buttos to the top */
   align-items: center; /* Horizontally centre buttons */
   gap: 10px; /* Add space between buttons */
 }
 
-/* Button Styling */
+/* Leagues Heading in Left Pane */
+.left-pane p {
+  font-size: 20px; /* Larger font size for visibility */
+  font-weight: bold; /* Make text bold */
+  margin-bottom: 20px; /* Add space below the heading */
+  color: #343a40; /* Darker text colour for better contrast */
+}
+
+/* Buttons in Left Pane */
 .left-button {
-  width: auto; /* Let the width adjust based on text content */
-  padding: 10px 20px; /* Optional: Adjust padding for spacing */
+  display: block; /* Ensure the button is treated a a block element */
+  width: 100%; /* Let the width adjust based on text content */
+  max-width: 140px;
+  padding: 10px; /* Optional: Adjust padding for spacing */
   font-size: 14px;
   cursor: pointer;
   text-align: center;
@@ -66,10 +121,17 @@ body {
 }
 
 .left-button:hover {
-  background-color: #3d3c3c; /* Set background colour */
+  background-color: #989595; /* Set background colour */
   color: white; /* Set font colour to white */
   border-radius: 10px; /* Add rounded corners */
 }
+
+.active {
+  background-color: #3d3c3c; /* Active background colour */
+  color: white; /* Active text colour */
+  border-radius: 10px; /* Add rounded corners */
+}
+
 
 /* Data Container (Table Container) */
 .data-container {
@@ -79,27 +141,26 @@ body {
   overflow-x: auto; /* Enable horizontal scrolling if needed */
   height: 100%; /* Ensure it fills the available vertical space */
   display: flex;
-  justify-content: center;
+  justify-content: center; /* Centre the table horizontally */
   align-items: flex-start; /* Ensure table stays aligned properly */
 }
 
-
-
-/* General table styling */
+/* General Table Styling */
 table {
-  table-layout: fixed;
-  width: fixed; /* Full width */
-  border-collapse: collapse; /* Merge borders for a clean look */
-  margin: 20px auto; /* Centre the table with some margin */
+  table-layout: auto; /* Allow columns to size dynamically based on content */
+  width: auto; /* Table width will match its content */
+  max-width: 100%; /* Prevent table from exceeding container width */
+  margin: 20px auto; /* Centre the table horizontally */
   font-family: Arial, sans-serif; /* Choose a clean font */
   font-size: 14px;
-  border: 1px solid #807f7f; /* Add an outer border */
+  border: 1px solid #807f7f; /* Outer border */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Drop shadow effect */
-  border-radius: 8px; /* Optional: Rounded corners */
-  border-left: 1px solid #807f7f; /* Keep left border */
-  border-right: 1px solid #807f7f; /* Keep right border */
+  border-radius: 10px; /* Rounded corners */
+  border-collapse: collapse; /* Merge borders for clean appearance */
+  border-radius: 10px; /*round table corners */
 }
 
+/* Table Header Styling */
 th {
   position: sticky;
   top: 0; /* Keep the header at the top when scrolling */
@@ -107,56 +168,44 @@ th {
   z-index: 10; /* Ensure it stays above other elements */
   text-align: center; /* Centre align header text */
   padding: 10px; /* Add some padding */
-  border-top: 1px solid #807f7f; /* Keep top border */
-  border-bottom: 1px solid #807f7f; /* Keep bottom border */
-  border-left: none; /* Remove vertical borders between headers */
-  border-right: none; /* Remove vertical borders between headers */
+  border-bottom: 1px solid #807f7f; /* Horizontal border below header */
 }
 
-/* Table row styling */
+/* Table Row and Cell Styling */
 td {
   padding: 5px; /* Reduce padding to make rows tighter */
   text-align: center; /* Centre align for all cells */
-  border-top: 1px solid #a5a2a2; /* Keep horizontal dividing lines */
-  border-bottom: 1px solid #a5a2a2; /* Keep horizontal dividing lines */
-  border-left: none; /* Remove vertical dividing lines */
-  border-right: none; /* Remove vertical dividing lines */
-  line-height: 1; /* Set line height to match text size */
+  border-bottom: 1px solid #cac8c8; /* Add horizontal line */
   vertical-align: middle; /* Ensure content is vertically centred */
 }
 
-/* Optional: First and last columns */
-table {
-  border-left: 1px solid #807f7f; /* Keep the outer left border */
-  border-right: 1px solid #807f7f; /* Keep the outer right border */
+/* Remove Vertical Lines Between Cells */
+th, td {
+  border-right: none !important; /* Remove vertical lines between columns */
 }
 
+/* Outer Table Borders */
+table td:first-child, table th:first-child {
+  border-left: none; /* Remove left border for the first column */
+}
 
+table td:last-child, table th:last-child {
+  border-right: none; /* Remove right border for the last column */
+}
 
-/* Hover effect for rows */
+/* Hover Effect for Rows */
 tr:hover {
   background-color: #f9f9f9; /* Highlight row on hover */
 }
 
-/* Optional: Make the first column (position) and last column (points) bold */
-td:first-child,
-td:last-child {
-  font-weight: bold;
-}
-
-/* Optional: Add rounded corners to the table */
-table {
-  border-radius: 8px; /* Rounded corners */
-  overflow: hidden; /* Prevent corners from being clipped */
-}
-
+/* Team Column Specific Styling */
 th.Team-column,
 td.Team-column {
   width: 150px !important;
-  text-align: Left !important;
+  text-align: left !important;
 }
 
-
+/* Badge Column and Images Styling */
 .badge-column img,
 .badge-img {
   width: auto !important; /* Fixed width */
@@ -167,7 +216,7 @@ td.Team-column {
 }
 
 .badge-column,
-td:nth-child(1), /* Assuming the badge column is the second column */
+td:nth-child(1), /* Assuming the badge column is the first column */
 th:nth-child(1) {
   text-align: center; /* Horizontally centre-align text and content */
   vertical-align: middle; /* Vertically centre-align the cell content */
