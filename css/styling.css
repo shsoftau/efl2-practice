@@ -78,23 +78,18 @@ body {
 
 /* Main Content Area */
 .main-content {
-  flex: 1; /* Take the remaining space below the menu bar */
+  flex: 1;
   display: flex;
-  flex-direction: row;
-  height: calc(100% - 100px); /* Subtract the height of the menu bar */
+  overflow: hidden; /* Prevent double scrollbars */
 }
 
 /* Left Pane */
 .left-pane {
-  width: 190px; /* Fixed width */
-  padding: 0; /* Add padding inside the pane */
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1); /* Optional shadow effect */
-  height: 100%; /* Make the left pane stretch to full height */
+  width: 190px;
+  position: relative;
   display: flex;
-  flex-direction: column; /* Arrange buttons vertically */
-  justify-content: flex-start; /*Align buttos to the top */
-  align-items: center; /* Horizontally centre buttons */
-  gap: 10px; /* Add space between buttons */
+  flex-direction: column;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Leagues Heading in Left Pane */
@@ -133,69 +128,77 @@ body {
 }
 
 
-/* Data Container (Table Container) */
+/* Data Container */
 .data-container {
-  flex: 1; /* Take the remaining width */
-  padding: 20px;
-  overflow-y: auto; /* Enable vertical scrolling */
-  overflow-x: auto; /* Enable horizontal scrolling if needed */
-  height: 100%; /* Ensure it fills the available vertical space */
-  display: flex;
-  justify-content: center; /* Centre the table horizontally */
-  align-items: flex-start; /* Ensure table stays aligned properly */
+  flex: 1;
+  overflow: auto;
+  padding: 20px 40px;
+  padding-bottom: 120px;
+  height: calc(100vh - 100px);
 }
 
-/* General Table Styling */
+/* Table Styling */
 table {
-  table-layout: auto; /* Allow columns to size dynamically based on content */
-  width: auto; /* Table width will match its content */
-  max-width: 100%; /* Prevent table from exceeding container width */
-  margin: 20px auto; /* Centre the table horizontally */
-  font-family: Arial, sans-serif; /* Choose a clean font */
-  font-size: 14px;
-  border: 1px solid #807f7f; /* Outer border */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Drop shadow effect */
-  border-radius: 10px; /* Rounded corners */
-  border-collapse: collapse; /* Merge borders for clean appearance */
-  border-radius: 10px; /*round table corners */
+  border-collapse: collapse;
+  width: auto;
+  margin-bottom: 100px;
+  font-size: 12px;
+  background-color: white;
+  table-layout: fixed;
+  white-space: nowrap;
 }
 
-/* Table Header Styling */
+/* Header Styling */
 th {
+  background-color: white;
   position: sticky;
-  top: 0; /* Keep the header at the top when scrolling */
-  background-color: #f3f3f3; /* Background colour for header */
-  z-index: 10; /* Ensure it stays above other elements */
-  text-align: center; /* Centre align header text */
-  padding: 10px; /* Add some padding */
-  border-bottom: 1px solid #807f7f; /* Horizontal border below header */
+  top: 0;
+  z-index: 10;
+  padding: 10px 5px;
+  font-weight: normal;  /* Less bold headers */
+  border-bottom: 1px solid #e5e5e5;
+  color: #666;
 }
 
-/* Table Row and Cell Styling */
+/* Cell Styling */
 td {
-  padding: 5px; /* Reduce padding to make rows tighter */
-  text-align: center; /* Centre align for all cells */
-  border-bottom: 1px solid #cac8c8; /* Add horizontal line */
-  vertical-align: middle; /* Ensure content is vertically centred */
+  padding: 8px 5px;
+  border-bottom: 1px solid #f0f0f0;  /* Lighter border */
+  vertical-align: middle;
 }
 
-/* Remove Vertical Lines Between Cells */
-th, td {
-  border-right: none !important; /* Remove vertical lines between columns */
-}
-
-/* Outer Table Borders */
-table td:first-child, table th:first-child {
-  border-left: none; /* Remove left border for the first column */
-}
-
-table td:last-child, table th:last-child {
-  border-right: none; /* Remove right border for the last column */
-}
-
-/* Hover Effect for Rows */
+/* Row Hover Effect */
 tr:hover {
-  background-color: #f9f9f9; /* Highlight row on hover */
+  background-color: #f8f9fa;  /* Subtle hover effect */
+}
+
+/* Image Styling */
+td img {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  object-fit: contain;
+}
+
+/* Remove borders between cells */
+th, td {
+  border-right: none;
+  border-left: none;
+}
+
+/* Team name styling */
+td[style*="text-align: left"] {
+  padding-left: 10px;  /* Add some padding for left-aligned cells */
+}
+
+/* Score styling */
+td[style*="text-align: center"] {
+  font-weight: 500;  /* Slightly bolder for scores */
+}
+
+/* Last 5 results styling for circles */
+td:last-child {
+  letter-spacing: 2px;  /* Space between result indicators */
 }
 
 /* Team Column Specific Styling */
@@ -220,4 +223,30 @@ td:nth-child(1), /* Assuming the badge column is the first column */
 th:nth-child(1) {
   text-align: center; /* Horizontally centre-align text and content */
   vertical-align: middle; /* Vertically centre-align the cell content */
+}
+
+.timezone-info {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    font-size: 10px;
+    color: #666;
+    padding: 10px;
+    text-align: center;
+    border-top: 1px solid #eee;
+}
+
+/* Add these rules to ensure consistent text spacing */
+table td, table th {
+    letter-spacing: normal;
+    word-spacing: normal;
+    font-family: Arial, sans-serif;  /* Ensure consistent font family */
+    white-space: nowrap;  /* Prevent unwanted wrapping */
+}
+
+/* Specifically target the venue column if needed */
+td[style*="text-align: left"]:last-child {
+    letter-spacing: normal;
+    word-spacing: normal;
 }

@@ -12,10 +12,9 @@
     <!-- Top Menu Bar -->
     <div id="menu-bar" class="menu-bar">
       <div class="top-buttons">
-        <button class="top-button" data-action="standings">Standings</button>
-        <button class="top-button" data-action="fixtures">Fixtures</button>
-        <button class="top-button" data-action="teamFixtures">Team Fixtures</button>
-      </div>
+        <button class="top-button" onclick="handleTopButtonClick(1)">Standings</button>
+        <button class="top-button" onclick="handleTopButtonClick(2)">Fixtures</button>
+      </div> 
     </div>
 
     <!-- Main Content Area -->
@@ -23,13 +22,14 @@
       <!-- Left Pane -->
       <div class="left-pane">
         <p>Leagues</p>
-        <button class="left-button" data-league="premier_league">Premier League</button>
-        <button class="left-button" data-league="bundesliga">Bundesliga</button>
-        <button class="left-button" data-league="la_liga">La Liga</button>
-        <button class="left-button" data-league="serie_a">Serie A</button>
-        <button class="left-button" data-league="ligue_1">Ligue 1</button>
-        <button class="left-button" data-league="primeira_liga">Primeira Liga</button>
-        <button class="left-button" data-league="eredivisie">Eredivisie</button>
+        <button class="left-button" onclick="handleLeftButtonClick('premier_league')">Premier League</button>
+        <button class="left-button" onclick="handleLeftButtonClick('bundesliga')">Bundesliga</button>
+        <button class="left-button" onclick="handleLeftButtonClick('ligue_1')">Ligue 1</button>
+        <button class="left-button" onclick="handleLeftButtonClick('la_liga')">La Liga</button>
+        <button class="left-button" onclick="handleLeftButtonClick('serie_a')">Serie A</button>
+        <button class="left-button" onclick="handleLeftButtonClick('eredivisie')">Eredivisie</button>
+        <button class="left-button" onclick="handleLeftButtonClick(4)">Champions League</button>
+        <div id="timezone-info" class="timezone-info"></div>
       </div>
 
       <!-- Data Container -->
@@ -39,6 +39,12 @@
     </div>
   </div>
 
-  <script src="./dist/index.js"></script> <!-- JavaScript file containing the logic -->
+  <script type="module">
+    import { handleLeftButtonClick, handleTopButtonClick } from '/dist/main.js';
+    // Make functions available globally
+    window.handleLeftButtonClick = handleLeftButtonClick;
+    window.handleTopButtonClick = handleTopButtonClick;
+  </script>
 </body>
 </html>
+
