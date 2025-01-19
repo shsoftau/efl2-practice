@@ -1,16 +1,39 @@
 export function fetchAndDisplayCSV(url, filterField, filterValue, columnSettings, hiddenColumns, displayFunc) {
+    // Log the URL being fetched
+    console.log('Attempting to fetch CSV from:', url);
+    
     Papa.parse(url, {
       download: true,
       header: true,
       complete: function (results) {
+        // Log successful parsing
+        console.log('CSV parsed successfully:', results);
+        
         const filteredData = results.data.filter(row => row[filterField] === filterValue);
+        console.log('Filtered data:', filteredData);
+        
         displayFunc(filteredData, columnSettings, hiddenColumns);
       },
       error: function (error) {
         console.error('Error loading CSV:', error);
+        
+        // Add more detailed error information to the page
+        const container = document.getElementById("data-container");
+        if (container) {
+          container.innerHTML = `
+            <div style="color: red;">
+              <p>Error loading data. Please check:</p>
+              <ul>
+                <li>The CSV file path is correct: ${url}</li>
+                <li>The file exists in the repository</li>
+                <li>The file is accessible via the URL</li>
+              </ul>
+            </div>
+          `;
+        }
       }
     });
-  }
+}
   
 
 export function displayData(data, columnSettings, hiddenColumns) {
