@@ -104,33 +104,18 @@ function refreshData() {
     }
 }
 
-// Export these functions and make them available globally
-export function handleLeftButtonClick(league) {
-    console.log("League selected:", league);
-    if (leagueDictionary[league]) {
-        globalState.sel_league_code = leagueDictionary[league];
-        console.log("League code set to:", globalState.sel_league_code);
-        refreshData();
-    } else {
-        console.log(`League "${league}" not found in leagueDictionary.`);
-    }
+// Export the functions that are used in HTML onclick events
+export function handleTopButtonClick(event) {
+    // Your function code here
 }
 
-export function handleTopButtonClick(pageKey) {
-    console.log("Page changed to:", pageKey);
-    globalState.PageKey = Number(pageKey);
-    
-    // Clear timezone info if switching to standings
-    if (pageKey === 1) {
-        clearTimezoneInfo();
-    }
-    
-    refreshData();
+export function handleLeftButtonClick(event) {
+    // Your function code here
 }
 
-// Make functions available globally
-window.handleLeftButtonClick = handleLeftButtonClick;
+// Make the functions available globally if they're used in onclick HTML attributes
 window.handleTopButtonClick = handleTopButtonClick;
+window.handleLeftButtonClick = handleLeftButtonClick;
 
 // Initial load
 refreshData();
