@@ -248,3 +248,43 @@ function testCoreFunctionality() {
 if (process.env.NODE_ENV !== 'production') {
     window.testCoreFunctionality = testCoreFunctionality;
 }
+
+function scrollToLatestGame() {
+  console.log('Scroll function triggered');
+  
+  // Find the first row where home team score is null
+  const tableRows = document.querySelectorAll('table tr');
+  console.log('Found table rows:', tableRows.length);
+
+  let targetRow;
+
+  for (const row of tableRows) {
+    const scoreCell = row.querySelector('.home-score'); // Let's verify this selector
+    console.log('Score cell found:', scoreCell, 'Content:', scoreCell?.textContent);
+    
+    if (scoreCell && scoreCell.textContent.trim() === '') {
+      targetRow = row;
+      console.log('Found target row:', row);
+      break;
+    }
+  }
+
+  if (targetRow) {
+    console.log('Scrolling to target row');
+    targetRow.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'center'
+    });
+  } else {
+    console.log('No target row found');
+  }
+}
+
+// Try both button types to ensure we catch the right ones
+document.querySelectorAll('.left-button, .top-button').forEach(button => {
+  console.log('Adding click listener to button:', button);
+  button.addEventListener('click', () => {
+    console.log('Button clicked');
+    setTimeout(scrollToLatestGame, 100);
+  });
+});
