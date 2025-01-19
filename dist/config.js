@@ -8,7 +8,7 @@ export const leagueDictionary = {
     "serie_a": 135,
     "ligue_1": 61,
     "primeira_liga": 94,
-    "eredivisie": 88,
+    "eredivisie": 88
 };
 
 export const urlDictionary = {
@@ -18,7 +18,7 @@ export const urlDictionary = {
 
 export const globalState = {
     PageKey: 1,
-    sel_league_code: 39,
+    sel_league_code: 39,  // Default to Premier League
 };
 
 

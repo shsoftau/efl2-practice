@@ -1,7 +1,41 @@
 import { leagueDictionary, urlDictionary, globalState } from './config.js';
 import { displayData_fixtures, clearTimezoneInfo } from './fixtures.js';
 
-// Define displayData once
+// Helper functions for button styles
+function updateTopButtonStyles() {
+    const buttons = document.querySelectorAll('.top-button');
+    buttons.forEach(button => {
+        const buttonPageKey = Number(button.getAttribute('onclick').match(/\d+/)[0]);
+        if (buttonPageKey === globalState.PageKey) {
+            button.classList.add('active');
+        } else {
+            button.classList.remove('active');
+        }
+    });
+}
+
+function updateLeftButtonStyles() {
+    console.log('Updating left button styles. Current league code:', globalState.sel_league_code);
+    const buttons = document.querySelectorAll('.left-button');
+    buttons.forEach(button => {
+        try {
+            const buttonLeague = button.getAttribute('onclick').match(/'([^']+)'/)[1];
+            const buttonLeagueCode = leagueDictionary[buttonLeague];
+            console.log('Button league:', buttonLeague, 'Code:', buttonLeagueCode);
+            
+            // Compare as numbers
+            if (Number(buttonLeagueCode) === Number(globalState.sel_league_code)) {
+                button.classList.add('active');
+            } else {
+                button.classList.remove('active');
+            }
+        } catch (error) {
+            console.error('Error processing button:', button, error);
+        }
+    });
+}
+
+// Display functions
 function displayData(data, columnSettings, hiddenColumns) {
     console.log("displayData called with:", data.length, "rows");
     const container = document.getElementById("data-container");
@@ -104,33 +138,113 @@ function refreshData() {
     }
 }
 
-// Export these functions and make them available globally
+// Add this at the start of the file after imports
+function checkCoreFeatures() {
+    // Check if required functions exist
+    const requiredFunctions = {
+        handleLeftButtonClick: window.handleLeftButtonClick,
+        handleTopButtonClick: window.handleTopButtonClick,
+        refreshData: refreshData,
+        displayData: displayData,
+        fetchAndDisplayCSV: fetchAndDisplayCSV
+    };
+
+    // Check if each function exists
+    Object.entries(requiredFunctions).forEach(([name, func]) => {
+        if (typeof func !== 'function') {
+            console.error(`Core function ${name} is missing or not a function!`);
+        }
+    });
+
+    // Check if required DOM elements exist
+    const requiredElements = {
+        'data-container': document.getElementById('data-container'),
+        'top-buttons': document.querySelector('.top-button'),
+        'left-buttons': document.querySelector('.left-button')
+    };
+
+    Object.entries(requiredElements).forEach(([name, element]) => {
+        if (!element) {
+            console.error(`Required element ${name} is missing!`);
+        }
+    });
+
+    // Check if global state is properly initialized
+    if (typeof globalState.PageKey === 'undefined' || 
+        typeof globalState.sel_league_code === 'undefined') {
+        console.error('Global state not properly initialized!');
+    }
+}
+
+// Button click handlers
 export function handleLeftButtonClick(league) {
-    console.log("League selected:", league);
-    if (leagueDictionary[league]) {
-        globalState.sel_league_code = leagueDictionary[league];
+    try {
+        console.log("League selected:", league);
+        if (!leagueDictionary[league]) {
+            console.error(`League "${league}" not found in leagueDictionary.`);
+            return;
+        }
+        globalState.sel_league_code = Number(leagueDictionary[league]);
         console.log("League code set to:", globalState.sel_league_code);
+        updateLeftButtonStyles();
         refreshData();
-    } else {
-        console.log(`League "${league}" not found in leagueDictionary.`);
+    } catch (error) {
+        console.error('Error in handleLeftButtonClick:', error);
     }
 }
 
 export function handleTopButtonClick(pageKey) {
-    console.log("Page changed to:", pageKey);
-    globalState.PageKey = Number(pageKey);
-    
-    // Clear timezone info if switching to standings
-    if (pageKey === 1) {
-        clearTimezoneInfo();
+    try {
+        console.log("Page changed to:", pageKey);
+        globalState.PageKey = Number(pageKey);
+        
+        if (pageKey === 1) {
+            clearTimezoneInfo();
+        }
+        
+        updateTopButtonStyles();
+        refreshData();
+    } catch (error) {
+        console.error('Error in handleTopButtonClick:', error);
     }
-    
-    refreshData();
 }
 
 // Make the functions available globally
 window.handleLeftButtonClick = handleLeftButtonClick;
 window.handleTopButtonClick = handleTopButtonClick;
 
-// Initial load
-refreshData();
+// Initialize button styles and load data
+document.addEventListener('DOMContentLoaded', () => {
+    // Check core features first
+    checkCoreFeatures();
+    
+    // Then proceed with initialization
+    updateTopButtonStyles();
+    updateLeftButtonStyles();
+    refreshData();
+});
+
+// Add this function to help with testing
+function testCoreFunctionality() {
+    console.group('Testing Core Functionality');
+    
+    // Test league switching
+    console.log('Testing league switch...');
+    handleLeftButtonClick('premier_league');
+    
+    // Test page switching
+    console.log('Testing page switch...');
+    handleTopButtonClick(1);
+    handleTopButtonClick(2);
+    
+    // Test data loading
+    console.log('Testing data refresh...');
+    refreshData();
+    
+    console.groupEnd();
+}
+
+// Add this to development tools
+if (process.env.NODE_ENV !== 'production') {
+    window.testCoreFunctionality = testCoreFunctionality;
+}

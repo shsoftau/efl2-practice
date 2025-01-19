@@ -89,30 +89,34 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
+  align-items: center; /* Center align the content */
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  padding: 20px 0; /* Add some padding top and bottom */
 }
 
 /* Leagues Heading in Left Pane */
 .left-pane p {
-  font-size: 20px; /* Larger font size for visibility */
-  font-weight: bold; /* Make text bold */
-  margin-bottom: 20px; /* Add space below the heading */
-  color: #343a40; /* Darker text colour for better contrast */
+  font-size: 16px; /* Smaller font size */
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #343a40;
+  text-align: center; /* Ensure center alignment */
 }
 
-/* Buttons in Left Pane */
+/* Buttons in Left Pane - ensure center alignment */
 .left-button {
-  display: block; /* Ensure the button is treated a a block element */
-  width: 100%; /* Let the width adjust based on text content */
+  display: block;
+  width: 80%; /* Slightly narrower than container */
   max-width: 140px;
-  padding: 10px; /* Optional: Adjust padding for spacing */
+  padding: 10px;
   font-size: 14px;
   cursor: pointer;
   text-align: center;
-  border: none; /* Remove borders */
-  background-color: transparent; /* Make background transparent */
-  color: inherit; /* Use inherited text colour */
-  transition: color 0.3s ease; /* Smooth transition for hover effects */
+  border: none;
+  background-color: transparent;
+  color: inherit;
+  transition: color 0.3s ease;
+  margin: 5px auto; /* Center the button and add vertical spacing */
 }
 
 .left-button:hover {
@@ -128,36 +132,81 @@ body {
 }
 
 
-/* Data Container */
+/* Data Container - Center the table */
 .data-container {
   flex: 1;
   overflow: auto;
   padding: 20px 40px;
   padding-bottom: 120px;
   height: calc(100vh - 100px);
+  display: flex;
+  justify-content: center;
+  position: relative;
 }
 
-/* Table Styling */
-table {
-  border-collapse: collapse;
+/* Table Styling - Apply to ALL tables */
+table,
+.data-container table {
+  border-collapse: separate;
+  border-spacing: 0;
   width: auto;
   margin-bottom: 100px;
-  font-size: 12px;
+  font-size: 14px !important;  /* Force 14px font size for all tables */
   background-color: white;
   table-layout: fixed;
   white-space: nowrap;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: visible; /* Changed from hidden to allow sticky headers to show */
+  position: relative;
 }
 
-/* Header Styling */
-th {
-  background-color: white;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  padding: 10px 5px;
-  font-weight: normal;  /* Less bold headers */
-  border-bottom: 1px solid #e5e5e5;
-  color: #666;
+/* Header Styling - Make it consistent for all tables */
+table th,
+table thead th,
+.data-container table th,
+#data-container table th {
+    background-color: #f5f5f5 !important;
+    color: #000000 !important;
+    position: -webkit-sticky !important; /* For Safari */
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 100 !important; /* Increased z-index */
+    padding: 10px 5px;
+    font-weight: normal;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+/* Force font size for all table cells */
+table td,
+table th,
+.data-container table td,
+.data-container table th {
+    font-size: 14px !important;
+}
+
+/* Ensure these styles apply to both regular and dynamically created tables */
+[id="data-container"] table th {
+    background-color: #f5f5f5 !important;
+    color: #000000 !important;
+}
+
+/* Ensure first and last cells in first row have rounded corners */
+table tr:first-child th:first-child {
+  border-top-left-radius: 10px;
+}
+
+table tr:first-child th:last-child {
+  border-top-right-radius: 10px;
+}
+
+/* Ensure first and last cells in last row have rounded corners */
+table tr:last-child td:first-child {
+  border-bottom-left-radius: 10px;
+}
+
+table tr:last-child td:last-child {
+  border-bottom-right-radius: 10px;
 }
 
 /* Cell Styling */
@@ -249,4 +298,11 @@ table td, table th {
 td[style*="text-align: left"]:last-child {
     letter-spacing: normal;
     word-spacing: normal;
+}
+
+.top-button.active,
+.left-button.active {
+    background-color: #5b5c5b; /* or any color you prefer */
+    color: white;
+    font-weight: bold;
 }
